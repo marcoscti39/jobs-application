@@ -7,11 +7,11 @@ import getJobsRoute from "./routes/register";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-import { getJobsController } from "./controlers/getJobs";
-import { addJobController } from "./controlers/addJob";
-import { removeJobController } from "./controlers/removeJob";
-import { getSingleJobController } from "./controlers/getSingleJob";
-import { updateJobController } from "./controlers/updateJob";
+import { getJobsController } from "./controllers/getJobs";
+import { addJobController } from "./controllers/addJob";
+import { removeJobController } from "./controllers/removeJob";
+import { getSingleJobController } from "./controllers/getSingleJob";
+import { updateJobController } from "./controllers/updateJob";
 
 dotenv.config();
 const app = express();
