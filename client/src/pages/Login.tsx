@@ -14,7 +14,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const redirectIfSuccess = () => {
-    navigate("/jobs/dashboard");
+    navigate("/dashboard");
   };
 
   const {
@@ -75,7 +75,7 @@ const Login = () => {
 
         <div className="mx-auto">
           Not a member yet?{" "}
-          <Link to="/jobs/register" className="text-purple-600">
+          <Link to="/register" className="text-purple-600">
             Register
           </Link>
         </div>

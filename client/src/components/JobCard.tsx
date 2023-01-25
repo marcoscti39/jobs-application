@@ -43,7 +43,7 @@ const JobCard: React.FC<JobCardProps> = ({
       </span>
       <div className="flex gap-4 ">
         <Link
-          to={`/jobs/edit/${position}/${userID}/${jobID}`}
+          to={`/edit/${position}/${userID}/${jobID}`}
           className="text-green-600 font-semibold"
         >
           Edit

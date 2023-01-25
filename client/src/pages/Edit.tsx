@@ -53,7 +53,7 @@ const Edit = () => {
   return (
     <section>
       <Link
-        to="/jobs/dashboard"
+        to="/dashboard"
         className="p-2 rounded bg-purple-600 my-8 block w-[max-content] text-white mx-auto"
       >
         Dashboard
