@@ -1,12 +1,15 @@
 import { Job } from "./postLogin";
 
 interface GetSingleJobResponse {
-  email: string;
-  jobs: Job[];
-  name: string;
-  password: string;
-  _v: number;
-  _id: string;
+  status: "success" | "error";
+  _doc: {
+    email: string;
+    jobs: Job[];
+    name: string;
+    password: string;
+    _v: number;
+    _id: string;
+  };
 }
 
 interface FetchSigleJobProps {
@@ -17,12 +20,14 @@ interface FetchSigleJobProps {
     jobState: string
   ) => void;
   jobID: string | undefined;
+  redirectToLoginPage: () => void;
 }
 
 export const fetchSingleJob = async ({
   addDataOnInput,
   userID,
   jobID,
+  redirectToLoginPage,
 }: FetchSigleJobProps) => {
   const response = await fetch(
     `http://localhost:3000/get-single-job/${userID || ""}`,
@@ -32,8 +37,12 @@ export const fetchSingleJob = async ({
     }
   );
   const data: GetSingleJobResponse = await response.json();
-  const job = data.jobs.find((job) => job._id === jobID);
-  console.log(job);
+  if (data.status === "error" && redirectToLoginPage) {
+    redirectToLoginPage();
+    return;
+  }
+  console.log(data);
+  const job = data._doc.jobs.find((job) => job._id === jobID);
   addDataOnInput(job?.company || "", job?.position || "", job?.jobState || "");
   return data;
 };

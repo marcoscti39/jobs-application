@@ -73,7 +73,7 @@ const Register = () => {
 
         <div className="mx-auto">
           Already Registered?{" "}
-          <Link to="/jobs/login" className="text-purple-600">
+          <Link to="/login" className="text-purple-600">
             Login
           </Link>
         </div>

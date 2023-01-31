@@ -9,10 +9,10 @@ import SpinnerLoader from "../components/SpinnerLoader";
 import SubmitButton from "../components/SubmitButton";
 import { getJobs } from "../fetch/getJobs";
 import { postJob } from "../fetch/postJob";
-import { Job, postLogin } from "../fetch/postLogin";
+import { redirectToLoginPage } from "../utils/redirectToLoginPage";
 
 const Dashboard = () => {
-  const { data, isLoading } = useQuery(["getJobs"], getJobs);
+  const { data, isLoading } = useQuery(["getJobs"], () => getJobs(true));
   const queryClient = useQueryClient();
   const { mutate: mutateJobs } = useMutation(postJob, {
     onSuccess: () => {
@@ -35,7 +35,7 @@ const Dashboard = () => {
         position: positionInputRef.current.value,
       },
     };
-    mutateJobs(newJob);
+    mutateJobs({ newJob, redirectCallback: redirectToLoginPage });
   };
   return (
     <>

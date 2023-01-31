@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { deleteJob } from "../fetch/deleteJob";
 import { getJobs } from "../fetch/getJobs";
 import { Job } from "../fetch/postLogin";
+import { redirectToLoginPage } from "../utils/redirectToLoginPage";
 
 type JobCardProps = Job & { userID: string };
 
@@ -16,20 +17,24 @@ const JobCard: React.FC<JobCardProps> = ({
   position,
   _id: jobID,
 }) => {
-  const { data, isLoading } = useQuery(["getJobs"], getJobs);
+  const { data, isLoading } = useQuery(["getJobs"], () => getJobs());
 
   const queryClient = useQueryClient();
-  const { mutate: mutateDeleteJob } = useMutation(deleteJob, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("getJobs");
-    },
-  });
+  const { data: deleteJobMutate, mutate: mutateDeleteJob } = useMutation(
+    deleteJob,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("getJobs");
+      },
+    }
+  );
+  console.log(deleteJobMutate);
   const handleDeleteJob = (jobID: string) => {
     const jobData = {
       name: data?.name!,
       jobID,
     };
-    mutateDeleteJob(jobData);
+    mutateDeleteJob({ jobData, redirectCallback: redirectToLoginPage });
   };
   return (
     <article className="flex flex-col gap-4 justify-center rounded h-[150px] relative bg-white shadow pl-3">
@@ -43,7 +48,7 @@ const JobCard: React.FC<JobCardProps> = ({
       </span>
       <div className="flex gap-4 ">
         <Link
-          to={`/jobs/edit/${position}/${userID}/${jobID}`}
+          to={`/edit/${position}/${userID}/${jobID}`}
           className="text-green-600 font-semibold"
         >
           Edit

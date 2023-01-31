@@ -7,11 +7,13 @@ import getJobsRoute from "./routes/register";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-import { getJobsController } from "./controlers/getJobs";
-import { addJobController } from "./controlers/addJob";
-import { removeJobController } from "./controlers/removeJob";
-import { getSingleJobController } from "./controlers/getSingleJob";
-import { updateJobController } from "./controlers/updateJob";
+import { getJobsController } from "./controllers/getJobs";
+import { addJobController } from "./controllers/addJob";
+import { removeJobController } from "./controllers/removeJob";
+import { getSingleJobController } from "./controllers/getSingleJob";
+import { updateJobController } from "./controllers/updateJob";
+import { checkAuthorization } from "./middleware/authorization";
+import { logOutController } from "./controllers/logOut";
 
 dotenv.config();
 const app = express();
@@ -32,11 +34,12 @@ connectDatabase();
 
 app.use("/login", loginRoute);
 app.use("/register", registerRoute);
-app.get("/get-jobs", getJobsController);
-app.post("/add-job", addJobController);
-app.delete("/delete-job", removeJobController);
-app.get("/get-single-job/:userID", getSingleJobController);
-app.patch("/update-job/:userID", updateJobController);
+app.get("/get-jobs", checkAuthorization, getJobsController);
+app.post("/add-job", checkAuthorization, addJobController);
+app.delete("/delete-job", checkAuthorization, removeJobController);
+app.get("/get-single-job/:userID", checkAuthorization, getSingleJobController);
+app.patch("/update-job/:userID", checkAuthorization, updateJobController);
+app.get("/user-logout", logOutController);
 // app.use("/get-jobs", getJobsRoute);
 
 app.listen(PORT, () => {

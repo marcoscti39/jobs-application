@@ -11,8 +11,8 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="jobs" element={<Header />}>
-          <Route path="home" element={<Home />} />
+        <Route path="/" element={<Header />}>
+          <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="dashboard" element={<Dashboard />} />
