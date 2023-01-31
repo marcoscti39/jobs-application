@@ -13,9 +13,17 @@ export const registerController = async (
     { userName: name },
     process.env?.ACCESS_SECRET_KEY!,
     {
+      expiresIn: "1m",
+    }
+  );
+  const refreshAccessKeyToken = jwt.sign(
+    { userName: name },
+    process.env?.REFRESH_ACCESS_KEY_SECRET!,
+    {
       expiresIn: "10m",
     }
   );
+  res.cookie("jwt-refresh-token", refreshAccessKeyToken);
   res.cookie("jwt-token", accessKey);
 
   res.json({ status: "success", msg: "User Created!" });

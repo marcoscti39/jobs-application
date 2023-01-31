@@ -1,21 +1,29 @@
-import React, { useRef } from "react";
-import { useMutation } from "react-query";
+import React, { useEffect, useRef } from "react";
+import { useMutation, useQuery } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 import Form from "../components/Form";
 import FormTitle from "../components/FormTitle";
 import InputComponent from "../components/InputComponent";
 import Notification, { NotificationProps } from "../components/Notification";
 import SubmitButton from "../components/SubmitButton";
+import { getJobs } from "../fetch/getJobs";
 import { postLogin } from "../fetch/postLogin";
 import { useNotification } from "../hooks/useNotification";
 
 const Login = () => {
-  const { mutate: mutateLogin, data: userData } = useMutation(postLogin);
   const navigate = useNavigate();
+  const { mutate: mutateLogin, data: userData } = useMutation(postLogin);
+  const { data } = useQuery(["getJobs"], () => getJobs());
 
   const redirectIfSuccess = () => {
     navigate("/dashboard");
   };
+
+  useEffect(() => {
+    if (data?.name) {
+      navigate("/dashboard");
+    }
+  }, []);
 
   const {
     isNotificationShowing,

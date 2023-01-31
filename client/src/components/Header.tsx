@@ -1,14 +1,16 @@
 import React from "react";
-import { useQuery } from "react-query";
-import { Link, Outlet } from "react-router-dom";
+import { useQuery, useQueryClient } from "react-query";
+import { Link, Outlet, redirect, useNavigate } from "react-router-dom";
 import { getJobs } from "../fetch/getJobs";
 import { getLogOut } from "../fetch/getLogout";
+import { redirectToLoginPage } from "../utils/redirectToLoginPage";
 
 const Header = () => {
-  const { data } = useQuery(["getJobs"], getJobs);
+  const { data, refetch } = useQuery(["getJobs"], () => getJobs(true));
 
   const handleLogout = async () => {
     await getLogOut();
+    refetch();
   };
 
   return (

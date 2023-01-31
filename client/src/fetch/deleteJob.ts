@@ -1,9 +1,18 @@
 interface IJobData {
-  name: string;
-  jobID: string;
+  jobData: {
+    name: string;
+    jobID: string;
+  };
+  redirectCallback: () => void;
 }
 
-export const deleteJob = async (jobData: IJobData) => {
+interface DeleteJobResponse {
+  status: "error" | "success";
+  msg?: string;
+  error?: string;
+}
+
+export const deleteJob = async ({ jobData, redirectCallback }: IJobData) => {
   const response = await fetch(`http://localhost:3000/delete-job`, {
     method: "DELETE",
     headers: {
@@ -12,6 +21,9 @@ export const deleteJob = async (jobData: IJobData) => {
     body: JSON.stringify(jobData),
     credentials: "include",
   });
-  const data = await response.json();
+  const data: DeleteJobResponse = await response.json();
+  if (data.status === "error" && redirectCallback) {
+    redirectCallback();
+  }
   return data;
 };
