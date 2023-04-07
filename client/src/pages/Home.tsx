@@ -23,7 +23,7 @@ const Home = () => {
       </p>
 
       <Link
-        to="/jobs/login"
+        to="/login"
         className="bg-purple-600 w-[max-content] rounded px-4 py-2 font-semibold text-white"
       >
         Login

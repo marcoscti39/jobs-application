@@ -1,14 +1,17 @@
 import { Job } from "./postLogin";
 
 export interface INewJob {
-  name: string;
-  data: {
-    company: string;
-    position: string;
+  newJob: {
+    name: string;
+    data: {
+      company: string;
+      position: string;
+    };
   };
+  redirectCallback: () => void;
 }
 
-export const postJob = async (newJob: INewJob) => {
+export const postJob = async ({ newJob, redirectCallback }: INewJob) => {
   try {
     const response = await fetch("http://localhost:3000/add-job", {
       method: "POST",
@@ -19,6 +22,10 @@ export const postJob = async (newJob: INewJob) => {
       credentials: "include",
     });
     const data = await response.json();
+    if (data.status === "error" && redirectCallback) {
+      redirectCallback();
+      return;
+    }
     return data;
   } catch (err) {
     console.log(err);

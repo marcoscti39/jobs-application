@@ -11,14 +11,22 @@ export const loginController = async (
 
   if (loginUser.length > 0) {
     if (loginUser[0].password === password) {
-      const accessKey = jwt.sign(
+      const accessKeyToken = jwt.sign(
         { userName: loginUser[0].name },
         process.env?.ACCESS_SECRET_KEY!,
+        {
+          expiresIn: "1m",
+        }
+      );
+      const refreshAccessKeyToken = jwt.sign(
+        { userName: loginUser[0].name },
+        process.env?.REFRESH_ACCESS_KEY_SECRET!,
         {
           expiresIn: "10m",
         }
       );
-      res.cookie("jwt-token", accessKey);
+      res.cookie("jwt-refresh-token", refreshAccessKeyToken);
+      res.cookie("jwt-token", accessKeyToken);
       res.json({
         userData: loginUser[0],
         userID: loginUser[0]._id,

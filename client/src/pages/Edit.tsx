@@ -7,6 +7,7 @@ import InputComponent from "../components/InputComponent";
 import SubmitButton from "../components/SubmitButton";
 import { fetchSingleJob } from "../fetch/getSingleJob";
 import { patchJob } from "../fetch/patchJob";
+import { redirectToLoginPage } from "../utils/redirectToLoginPage";
 
 const Edit = () => {
   const { userID, jobPosition, jobID } = useParams();
@@ -32,7 +33,7 @@ const Edit = () => {
   };
 
   const { data: singleJobData, isLoading } = useQuery(["singleJob"], () =>
-    fetchSingleJob({ userID, addDataOnInput, jobID })
+    fetchSingleJob({ userID, addDataOnInput, jobID, redirectToLoginPage })
   );
 
   const { mutate: mutateUpdateJob } = useMutation(patchJob);
@@ -53,7 +54,7 @@ const Edit = () => {
   return (
     <section>
       <Link
-        to="/jobs/dashboard"
+        to="/dashboard"
         className="p-2 rounded bg-purple-600 my-8 block w-[max-content] text-white mx-auto"
       >
         Dashboard
